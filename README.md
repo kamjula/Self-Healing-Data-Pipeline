@@ -1,49 +1,63 @@
-# Self-Healing Data Pipeline
+# 🔧 Self-Healing Data Pipeline
 
-A data pipeline that detects its own issues and fixes them — things like missing values, schema changes, duplicates, and outliers — without needing someone to manually step in every time something breaks.
+A Python + SQL data pipeline that detects its own failures and recovers automatically — handling missing values, schema drift, duplicates, and outliers without manual intervention.
 
-I built this because I kept running into the same problem: pipelines fail silently or dump bad data downstream and you only find out later. The idea here is to catch failures at each stage, classify what went wrong, and apply a recovery strategy automatically.
+## ✨ What It Does
 
-## How it works
+| Feature | Description |
+|---------|-------------|
+| 🔍 Anomaly Detection | Flags missing values, type mismatches, duplicates, and statistical outliers per batch |
+| 🛠 Auto-Recovery | Applies recovery strategies — imputation, quarantine, retry — based on failure type |
+| 📋 Data Quality Scoring | Scores each batch and triggers alerts when quality drops below threshold |
+| 🗒️ Audit Logging | Logs every pipeline run with failure type, recovery action, and timestamp |
+| 🔌 Modular Stages | Ingest → Validate → Recover → Transform → Load — each stage is independently testable |
 
-Each batch of data goes through four stages:
+## 🚨 Self-Healing Logic
 
-1. **Ingest** — pull in the raw data
-2. 2. **Validate** — check for schema drift, nulls, duplicates, statistical outliers
-   3. 3. **Recover** — if something's off, apply the right fix (impute, quarantine, retry, etc.)
-      4. 4. **Load** — write clean data to the target store
-        
-         5. Every run gets logged so you have a full audit trail of what was detected and what was done about it.
-        
-         6. ## Tech
-        
-         7. Python, Pandas, SQL (SQLite / Postgres), standard logging
-        
-         8. ## Run it
-        
-         9. ```bash
-            git clone https://github.com/kamjula/Self-Healing-Data-Pipeline.git
-            cd Self-Healing-Data-Pipeline
-            pip install pandas numpy pytest
-            python pipeline/ingest.py
-            ```
+Each batch goes through:
 
-            ## Structure
+1. **Detect** — validate against schema rules and statistical thresholds
+2. 2. **Classify** — missing data / outlier / schema drift / duplicate
+   3. 3. **Recover** — apply the right fix automatically
+      4. 4. **Log** — full audit trail for every event
+         5. 5. **Alert** — notify when quality score drops below threshold
+           
+            6. ## 🛠 Tech Stack
+           
+            7. Python · Pandas · SQL (SQLite / Postgres) · Logging · pytest
+           
+            8. | Layer | Technology |
+            9. |-------|-----------|
+            10. | Pipeline logic | Python + Pandas |
+            11. | Storage & querying | SQL (SQLite / Postgres) |
+            12. | Audit trail | Python logging module |
+            13. | Testing | pytest |
+           
+            14. ## 📁 Project Structure
+           
+            15. ```
+                Self-Healing-Data-Pipeline/
+                ├── pipeline/
+                │   ├── ingest.py        # Data ingestion
+                │   ├── validate.py      # Quality checks + anomaly detection
+                │   ├── transform.py     # Business logic
+                │   ├── load.py          # Write to target store
+                │   └── recover.py       # Self-healing recovery strategies
+                ├── tests/
+                ├── logs/
+                ├── data/
+                └── README.md
+                ```
 
-            ```
-            Self-Healing-Data-Pipeline/
-            ├── pipeline/
-            │   ├── ingest.py
-            │   ├── validate.py
-            │   ├── transform.py
-            │   ├── load.py
-            │   └── recover.py
-            ├── tests/
-            ├── logs/
-            ├── data/
-            └── README.md
-            ```
+                ## 🚀 How to Run
 
-            ---
+                ```bash
+                git clone https://github.com/kamjula/Self-Healing-Data-Pipeline.git
+                cd Self-Healing-Data-Pipeline
+                pip install pandas numpy pytest
+                python pipeline/ingest.py
+                ```
 
-            Sravani Kamjula
+                ## 👩‍💻 Author
+
+                Sravani Kamjula | Data Analyst &nbsp; [LinkedIn](https://linkedin.com) · [Portfolio](https://github.com/kamjula)
