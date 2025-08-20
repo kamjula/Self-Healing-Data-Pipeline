@@ -1,69 +1,49 @@
-# Self-Healing Data Pipeline 🔧🔄
+# Self-Healing Data Pipeline
 
-An automated data pipeline with built-in anomaly detection, error recovery, and data quality monitoring — designed to self-diagnose and recover from common data failures without manual intervention.
+A data pipeline that detects its own issues and fixes them — things like missing values, schema changes, duplicates, and outliers — without needing someone to manually step in every time something breaks.
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue) ![SQL](https://img.shields.io/badge/SQL-SQLite%2FPostgres-orange) ![Status](https://img.shields.io/badge/Status-Active-green)
+I built this because I kept running into the same problem: pipelines fail silently or dump bad data downstream and you only find out later. The idea here is to catch failures at each stage, classify what went wrong, and apply a recovery strategy automatically.
 
-## 🚀 Overview
+## How it works
 
-This project simulates a production-grade ETL pipeline that monitors incoming data streams, detects anomalies (missing values, schema drift, outliers), logs failures, and automatically applies recovery strategies — all without human intervention.
+Each batch of data goes through four stages:
 
-## ✨ Features
+1. **Ingest** — pull in the raw data
+2. 2. **Validate** — check for schema drift, nulls, duplicates, statistical outliers
+   3. 3. **Recover** — if something's off, apply the right fix (impute, quarantine, retry, etc.)
+      4. 4. **Load** — write clean data to the target store
+        
+         5. Every run gets logged so you have a full audit trail of what was detected and what was done about it.
+        
+         6. ## Tech
+        
+         7. Python, Pandas, SQL (SQLite / Postgres), standard logging
+        
+         8. ## Run it
+        
+         9. ```bash
+            git clone https://github.com/kamjula/Self-Healing-Data-Pipeline.git
+            cd Self-Healing-Data-Pipeline
+            pip install pandas numpy pytest
+            python pipeline/ingest.py
+            ```
 
-- **Anomaly Detection** — Identifies missing values, duplicates, type mismatches, and statistical outliers
-- - **Auto-Recovery** — Applies configurable fallback strategies (imputation, quarantine, retry logic)
-  - - **Data Quality Scoring** — Assigns quality scores per batch with threshold alerting
-    - - **Audit Logging** — Full pipeline run history with error traces and recovery actions
-      - - **Modular Design** — Plug-and-play stages for ingestion, validation, transformation, and load
-       
-        - ## 🛠️ Tech Stack
-       
-        - | Tool | Purpose |
-        - |------|---------|
-        - | Python 3.10+ | Core pipeline logic |
-        - | Pandas | Data processing & transformation |
-        - | SQL (SQLite/Postgres) | Storage & querying |
-        - | Logging module | Audit trail & diagnostics |
-        - | pytest | Unit testing pipeline stages |
-       
-        - ## 📁 Repository Structure
-       
-        - ```
-          Self-Healing-Data-Pipeline/
-          ├── pipeline/
-          │   ├── ingest.py          # Data ingestion layer
-          │   ├── validate.py        # Quality checks & anomaly detection
-          │   ├── transform.py       # Business logic transformations
-          │   ├── load.py            # Output to target store
-          │   └── recover.py         # Self-healing recovery strategies
-          ├── tests/                 # Unit tests
-          ├── logs/                  # Pipeline audit logs
-          ├── data/                  # Sample input datasets
-          └── README.md
-          ```
+            ## Structure
 
-          ## 🔍 Self-Healing Logic
+            ```
+            Self-Healing-Data-Pipeline/
+            ├── pipeline/
+            │   ├── ingest.py
+            │   ├── validate.py
+            │   ├── transform.py
+            │   ├── load.py
+            │   └── recover.py
+            ├── tests/
+            ├── logs/
+            ├── data/
+            └── README.md
+            ```
 
-          1. **Detect** — Each batch is validated against schema rules and statistical thresholds
-          2. 2. **Diagnose** — Failures are classified (missing data, outlier, schema drift, etc.)
-             3. 3. **Recover** — Recovery strategy is applied based on failure type
-                4. 4. **Log** — All events are logged with timestamps for traceability
-                   5. 5. **Alert** — Quality score drops below threshold trigger notifications
-                     
-                      6. ## 🚦 Getting Started
-                     
-                      7. ```bash
-                         # Clone the repository
-                         git clone https://github.com/kamjula/Self-Healing-Data-Pipeline.git
-                         cd Self-Healing-Data-Pipeline
+            ---
 
-                         # Install dependencies
-                         pip install pandas numpy pytest
-
-                         # Run the pipeline
-                         python pipeline/ingest.py
-                         ```
-
-                         ## 👤 Author
-
-                         **Sravani Kamjula** — Data Analyst | [LinkedIn](https://linkedin.com) | [GitHub](https://github.com/kamjula)
+            Sravani Kamjula
