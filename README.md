@@ -1,4 +1,4 @@
-# 🔧 Self-Healing Data Pipeline
+# 🔧 Self-Healing Data Pipeline — Design Concept
 
 A Python + SQL data pipeline that detects its own failures and recovers automatically — handling missing values, schema drift, duplicates, and outliers without manual intervention.
 
