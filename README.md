@@ -1,63 +1,44 @@
-# 🔧 Self-Healing Data Pipeline — Design Concept
+# Self-Healing Data Pipeline — Architecture Concept
 
-A Python + SQL data pipeline that detects its own failures and recovers automatically — handling missing values, schema drift, duplicates, and outliers without manual intervention.
+> **Status: design concept / documentation only.**  
+> This repository currently contains the architecture and intended behavior, not a completed runnable implementation.
 
-## ✨ What It Does
+## Goal
 
-| Feature | Description |
-|---------|-------------|
-| 🔍 Anomaly Detection | Flags missing values, type mismatches, duplicates, and statistical outliers per batch |
-| 🛠 Auto-Recovery | Applies recovery strategies — imputation, quarantine, retry — based on failure type |
-| 📋 Data Quality Scoring | Scores each batch and triggers alerts when quality drops below threshold |
-| 🗒️ Audit Logging | Logs every pipeline run with failure type, recovery action, and timestamp |
-| 🔌 Modular Stages | Ingest → Validate → Recover → Transform → Load — each stage is independently testable |
+Explore how a Python + SQL data pipeline could detect common data-quality failures, choose a bounded recovery action, and preserve an auditable record of what happened.
 
-## 🚨 Self-Healing Logic
+## Proposed Flow
 
-Each batch goes through:
+1. **Detect** — validate schema, missing values, duplicates, and statistical anomalies.
+2. **Classify** — map the failure to a known category.
+3. **Recover** — choose a bounded action such as quarantine, retry, or controlled imputation.
+4. **Log** — record the failure, action, and timestamp.
+5. **Alert** — surface cases that should not be repaired automatically.
 
-1. **Detect** — validate against schema rules and statistical thresholds
-2. 2. **Classify** — missing data / outlier / schema drift / duplicate
-   3. 3. **Recover** — apply the right fix automatically
-      4. 4. **Log** — full audit trail for every event
-         5. 5. **Alert** — notify when quality score drops below threshold
-           
-            6. ## 🛠 Tech Stack
-           
-            7. Python · Pandas · SQL (SQLite / Postgres) · Logging · pytest
-           
-            8. | Layer | Technology |
-            9. |-------|-----------|
-            10. | Pipeline logic | Python + Pandas |
-            11. | Storage & querying | SQL (SQLite / Postgres) |
-            12. | Audit trail | Python logging module |
-            13. | Testing | pytest |
-           
-            14. ## 📁 Project Structure
-           
-            15. ```
-                Self-Healing-Data-Pipeline/
-                ├── pipeline/
-                │   ├── ingest.py        # Data ingestion
-                │   ├── validate.py      # Quality checks + anomaly detection
-                │   ├── transform.py     # Business logic
-                │   ├── load.py          # Write to target store
-                │   └── recover.py       # Self-healing recovery strategies
-                ├── tests/
-                ├── logs/
-                ├── data/
-                └── README.md
-                ```
+## Intended Components
 
-                ## 🚀 How to Run
+| Component | Intended responsibility |
+|---|---|
+| Validation layer | Schema, null, duplicate, and outlier checks |
+| Recovery policy | Explicit rules for retry, quarantine, or repair |
+| Data-quality score | Batch-level quality summary |
+| Audit log | Traceable record of failure and action |
+| Alerting | Escalation when thresholds or safety rules are exceeded |
 
-                ```bash
-                git clone https://github.com/kamjula/Self-Healing-Data-Pipeline.git
-                cd Self-Healing-Data-Pipeline
-                pip install pandas numpy pytest
-                python pipeline/ingest.py
-                ```
+## Intended Stack
 
-                ## 👩‍💻 Author
+Python · Pandas · SQL · pytest · structured logging
 
-                Sravani Kamjula | Data Analyst &nbsp; [LinkedIn](https://linkedin.com) · [Portfolio](https://github.com/kamjula)
+## What is not implemented yet
+
+- No runnable pipeline code is currently included.
+- No automated recovery logic has been validated.
+- No benchmark or production reliability claim is made.
+- No deployment or hosted demo exists.
+
+This repository is intentionally kept as an architecture concept until an implementation and tests are added.
+
+## Author
+
+Sravani Kamjula · AI/ML Engineer  
+[LinkedIn](https://www.linkedin.com/in/sravani-kamjula/) · [GitHub](https://github.com/kamjula)
